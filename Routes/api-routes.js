@@ -1,15 +1,25 @@
 const router = require("express").Router();
 const fs = require('fs');
 let db = require("../db/db.json");
-const { route } = require("./html-routes");
+
 
 router.get('/notes', (req, res) => {
-    db = JSON.parse(fs.readFileSync ("./db/db.json", "utf-8"))
+  db = JSON.parse(fs.readFileSync("./db/db.json", "utf-8"))
     res.json(db);
 });
 
 
+router.post("/notes", (req, res) => {
+    const newNote = {
+        title: req.body.title,
+        text: req.body.text,
+        id: Math.floor(Math.random()* 100)}
+        db.push(newNote)
+        fs.writeFileSync("./db/db.json", JSON.stringify(db))
+        res.json(db);
 
+
+});
 
 
 
